@@ -9,6 +9,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const port = configService.get<number>("PORT") || 3000;
+  
+  app.enableCors({
+    origin: ['https://front-stt.vercel.app'], // 프론트 주소 넣기
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
