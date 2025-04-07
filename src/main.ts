@@ -11,7 +11,7 @@ async function bootstrap() {
   const port = configService.get<number>("PORT") || 3000;
   
   app.enableCors({
-    origin: ['https://front-stt.vercel.app'], // 프론트 주소 넣기
+    origin: ['https://front-stt-krw3.vercel.app/'], // 프론트 주소 넣기
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
