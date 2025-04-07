@@ -9,20 +9,19 @@ export class SttController {
     }
 
     @Post('upload')
-    @UseInterceptors(
-        FileInterceptor('file', {
-            storage: memoryStorage(),
-        }),
-    )
+    @UseInterceptors(FileInterceptor('file', {
+      storage: memoryStorage(),
+    }))
     async transcribe(@UploadedFile() file: Express.Multer.File) {
         if (!file) throw new BadRequestException('파일 업로드 안됨');
-
+    
         try {
-            const transcript = await this.sttService.transcribeAudio(file.path);
-            return transcript;
+            const transcript = await this.sttService.transcribeAudio(file.buffer); // ✅ buffer로 변경
+            return {transcript};
         } catch (error) {
-            throw new BadRequestException(`오류 발생: ${error.message}`)
+            throw new BadRequestException(`오류 발생: ${error.message}`);
         }
     }
+    
 
 }

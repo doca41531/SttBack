@@ -12,10 +12,8 @@ export class SttService {
         this.deepgramClient = createClient(process.env.DEEPGRAM_API_KEY);
     }
 
-    async transcribeAudio(filePath: string): Promise<string> {
+    async transcribeAudio(fileBuffer: Buffer): Promise<string> {
         try {
-            const fileData = fs.readFileSync(filePath);
-
             const options = {
                 model: 'general',
                 tier: 'enhanced',
@@ -24,18 +22,19 @@ export class SttService {
                 smart_format: true,
                 diarize: true,
             };
-
-            const {result, error} = await this.deepgramClient.listen.prerecorded.transcribeFile(fileData, options);
-
+    
+            const { result, error } = await this.deepgramClient.listen.prerecorded.transcribeFile(fileBuffer, options);
+    
             if (error) {
                 throw new Error(`에러: ${error.message}`);
             }
-
+    
             return result?.results.channels[0].alternatives[0].transcript;
         } catch (error) {
             console.log(`에러: ${error}`);
             throw error;
         }
     }
+    
 
 }
